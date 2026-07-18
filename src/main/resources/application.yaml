@@ -12,14 +12,16 @@ spring:
     gateway:
       routes:
         - id: ride-matching-route
-          uri: http://localhost:8081 # Routes locally to backend Matchmaker port
+          uri: forward:///  # Routes locally to backend Matchmaker port
+
           predicates:
-            - Path=/api/v1/match/**
+            - Path=/api/v1/match/**, /api/v1/drivers/**
+
           filters:
             - name: CustomRateLimiterFilter
               args:
                 limit: 100 # Maximum requests allowed
-                windowMillis: 60000 # 60 seconds rolling sliding window
+                windowMillis: 6000 # 60 seconds rolling sliding window
 
   data:
     redis:
